@@ -4,17 +4,18 @@
       <app-header />
     </v-app-bar>
     <v-main>
-      <HelloWorld/>
+      <ip-tracker />
     </v-main>
   </v-app>
 </template>
 
 <script>
 import AppHeader from './components/Header.vue';
+import IpTracker from './views/IpTracker.vue';
 
 export default {
   name: 'App',
-  components: { AppHeader },
+  components: { AppHeader, IpTracker },
   data() {},
 };
 </script>
