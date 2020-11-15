@@ -1,11 +1,5 @@
 <template>
-  <v-row
-    justify="center"
-    id="searchForm"
-  >
-    <v-col cols="12">
-      <h2>IP Address Tracker</h2>
-    </v-col>
+  <v-row justify="center">
     <v-col
       cols="12"
       md="6"
@@ -32,8 +26,9 @@
               dark
             />
           </v-col>
-          <v-col cols="12" md="2" class="mt-2">
+          <v-col cols="12" md="2">
             <v-btn
+              type="submit"
               :block="isMobile"
               large
               color="indigo accent-3"
@@ -85,27 +80,19 @@ export default {
   },
   methods: {
     submission() {
-      console.log('Submitted!');
+      this.$emit('submit');
     },
   },
 };
 </script>
-
-<style scoped>
-  h2 {
-    color: #ffffff;
-    text-align: center;
-  }
-  #searchForm {
-    background-image: url('../assets/pattern-bg.png');
-    background-size: cover;
-    background-position: center center;
-  }
-</style>
-
 <style>
   .v-message > .v-messages__wrapper > .v-messages__message
     :not(.error--text > .v-messages__wrapper > .v-messages__message) {
     color: #ffffff;
+  }
+  @media only screen and (min-width: 1024px) {
+    form button[type="submit"] {
+      margin-top: .46em;
+    }
   }
 </style>
