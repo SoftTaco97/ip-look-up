@@ -1,20 +1,16 @@
 <template>
-  <v-container fluid>
-    <v-row justify="center" class="search-area">
-      <v-col cols="6" md="4" id="ip-search">
-        <v-text-field
-          v-model="ipAddress"
-          label="IP Address"
-          placeholder="Enter IP Here.."
-          solo
-        />
-      </v-col>
+  <v-container fluid id="ipTracker">
+    <search-form :search="ipAddress" />
+    <v-row justify="center" id="resultsArea">
+      <v-col cols="6" md="4" id="ipResults"></v-col>
       <v-col cols="10" id="map" class="elevation-6"></v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import SearchForm from '../components/SearchForm.vue';
+
 export default {
   name: 'IpTracker',
   data() {
@@ -27,7 +23,7 @@ export default {
   },
   methods: {
     loadMap() {
-      const mymap = L.map('map').setView([51.505, -0.09], 13);
+      const map = L.map('map').setView([51.505, -0.09], 13);
       L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${process.env.VUE_APP_ACCESS_TOKEN}`, {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
@@ -35,19 +31,24 @@ export default {
         tileSize: 512,
         zoomOffset: -1,
         accessToken: process.env.VUE_APP_ACCESS_TOKEN,
-      }).addTo(mymap);
+      }).addTo(map);
     },
   },
+  components: { SearchForm },
 };
 </script>
+
 <style>
-  .search-area {
+  #ipTracker {
+    padding-top: 0;
+  }
+  /* #resultsArea {
     position: relative;
   }
-  #ip-search, #map {
+  #ipResults, #map {
     position: absolute;
-  }
-  #ip-search {
+  } */
+  #ipResults {
     z-index: 9;
   }
   #map {
