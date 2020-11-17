@@ -14,11 +14,15 @@ export default (lat = 51.505, lng = -0.09) => {
     zoomOffset: -1,
     accessToken: process.env.VUE_APP_ACCESS_TOKEN,
   }).addTo(map);
+  L.marker([lat, lng]).addTo(map);
   /**
    * Function for setting a new view in the map
    * @param { Number } newLat
    * @param { Number } newLng
    * @return { void }
    */
-  return (newLat = 51.505, newLng = -0.09) => map.setView([newLat, newLng]);
+  return (newLat = 51.505, newLng = -0.09) => {
+    map.setView([newLat, newLng]);
+    L.marker([newLat, newLng]).addTo(map);
+  };
 };

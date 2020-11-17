@@ -2,8 +2,9 @@
   <v-app>
     <header>
       <AppHeader
-        :ipAddress="ipAddress"
-        @update-search="updateIpAddress"
+        :userSearch="userSearch"
+        :loading="loading"
+        @update-search="updateSearch"
         @submit="processIp"
       />
     </header>
@@ -66,10 +67,11 @@ export default {
   name: 'App',
   data() {
     return {
-      ipAddress: '',
+      userSearch: '',
       ipData: [],
       updateMap: null,
       error: false,
+      loading: false,
     };
   },
   mounted() {
@@ -84,8 +86,8 @@ export default {
       };
       return titles[value] || capitalize(value);
     },
-    updateIpAddress(ip) {
-      this.ipAddress = ip;
+    updateSearch(search) {
+      this.userSearch = search;
     },
     createIpData({ location, ip, isp }) {
       // Create a readable location
@@ -112,22 +114,25 @@ export default {
       }
     },
     async processIp() {
+      this.loading = true;
       try {
         const { location, isp, ip } = await this.requestIpData() || {};
         if (location && isp && ip) {
           this.ipData = this.createIpData({ location, isp, ip });
           // Set the ip address variable if it is not set
-          if (!this.ipAddress) this.updateIpAddress(ip);
+          if (!this.userSearch) this.updateSearch(ip);
+
           // Update the map
           this.setMap(location);
         }
       } catch (e) {
         this.error = true;
-        this.setMap(); // update the map to the default values
+      } finally {
+        this.loading = false;
       }
     },
     async requestIpData() {
-      const url = `https://geo.ipify.org/api/v1?apiKey=${process.env.VUE_APP_API_KEY}&ipAddress=${this.ipAddress}`;
+      const url = `https://geo.ipify.org/api/v1?apiKey=${process.env.VUE_APP_API_KEY}&domain=${this.userSearch}`;
       const { status, data } = await axios.get(url);
       if (status === 200 && data) return data;
       throw new Error('Bad information returned');

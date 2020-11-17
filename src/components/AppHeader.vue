@@ -6,8 +6,9 @@
       </v-col>
     </v-row>
     <search-form
-      :search="ipAddress"
-      @update-search="updateIpAddress"
+      :search="userSearch"
+      :loading="loading"
+      @update-search="updateSearch"
       @submit="requestIpData"
     />
   </v-container>
@@ -19,13 +20,17 @@ import SearchForm from './SearchForm.vue';
 export default {
   name: 'AppHeader',
   props: {
-    ipAddress: {
+    userSearch: {
       type: String,
+      required: true,
+    },
+    loading: {
+      type: Boolean,
       required: true,
     },
   },
   methods: {
-    updateIpAddress(val) {
+    updateSearch(val) {
       this.$emit('update-search', val);
     },
     requestIpData() {

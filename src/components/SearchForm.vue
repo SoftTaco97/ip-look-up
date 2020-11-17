@@ -16,11 +16,11 @@
             md="10"
           >
             <v-text-field
-              v-model="ipAddress"
+              v-model="userSearch"
               :rules="searchRules"
               label="IP Address"
-              placeholder="Enter IP Here.."
-              hint="Example: 123.456.78.9"
+              placeholder="Enter IP or Domain Here.."
+              hint="123.456.78.9 or www.example.com"
               outlined
               clearable
               dark
@@ -35,6 +35,7 @@
               aria-label="search"
               class="white--text"
               :disabled="!valid"
+              :loading="loading"
             >
               <v-icon>mdi-magnify</v-icon>
             </v-btn>
@@ -46,7 +47,8 @@
 </template>
 
 <script>
-const ipRegex = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/g;
+const ipRegex = /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/;
+const domainRegex = /^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})$/;
 
 export default {
   name: 'SearchForm',
@@ -55,18 +57,22 @@ export default {
       type: String,
       required: true,
     },
+    loading: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     return {
       valid: false,
       searchRules: [
         (v) => !!v || 'Required',
-        (v) => ipRegex.test(v) || 'Search must be a valid IPV4 IP Address.',
+        (v) => ipRegex.test(v) || domainRegex.test(v) || 'Search must be a valid IPV4 IP Address or domain.',
       ],
     };
   },
   computed: {
-    ipAddress: {
+    userSearch: {
       get() {
         return this.search;
       },
