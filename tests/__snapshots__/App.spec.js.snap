@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App.vue unit tests rendering unit tests Should match the snapshot 1`] = `
+<div data-app="true" class="v-application v-application--is-ltr theme--light" id="app">
+  <div class="v-application--wrap">
+    <header>
+      <div class="container container--fluid">
+        <div class="row justify-center">
+          <div class="col col-12">
+            <h2>IP Address Look Up</h2>
+          </div>
+        </div>
+        <div class="row justify-center">
+          <div class="col-md-6 col-lg-4 col-12">
+            <form novalidate="novalidate" class="v-form">
+              <div class="row">
+                <div class="col-md-10 col-12">
+                  <div class="v-input theme--dark v-text-field v-text-field--enclosed v-text-field--outlined v-text-field--placeholder">
+                    <div class="v-input__control">
+                      <div class="v-input__slot">
+                        <fieldset aria-hidden="true">
+                          <legend style="width: 0px;"><span>​</span></legend>
+                        </fieldset>
+                        <div class="v-text-field__slot"><label for="input-15" class="v-label v-label--active theme--dark" style="left: 0px; position: absolute;">IP Address</label><input id="input-15" placeholder="Enter IP or Domain Here.." type="text"></div>
+                        <div class="v-input__append-inner">
+                          <div class="v-input__icon v-input__icon--clear"><button disabled="disabled" type="button" aria-label="clear icon" class="v-icon notranslate v-icon--disabled v-icon--link mdi mdi-close theme--dark"></button></div>
+                        </div>
+                      </div>
+                      <div class="v-text-field__details">
+                        <div class="v-messages theme--dark">
+                          <transition-group-stub tag="div" name="message-transition" class="v-messages__wrapper"></transition-group-stub>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-2 col-12"><button type="submit" disabled="disabled" class="white--text v-btn v-btn--block v-btn--contained v-btn--disabled theme--light v-size--large" aria-label="search"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-magnify theme--light"></i></span></button></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="v-main" style="padding: 0px 0px 0px 0px;">
+      <div class="v-main__wrap">
+        <div class="container container--fluid">
+          <div id="resultsArea" class="row justify-center">
+            <div id="ipResults" class="col-md-6 col-8">
+              <div class="v-sheet theme--light elevation-2 rounded">
+                <div class="container container--fluid">
+                  <div class="row no-gutters justify-center">
+                    <div class="col">
+                      Loading...
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="map" class="col col-12"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="v-footer v-sheet theme--light v-footer--fixed v-footer--padless indigo accent-3" style="left: 0px; right: 0px; bottom: 0px;">
+      <div class="container container--fluid">
+        <div class="row justify-center">
+          <h3>Jared Martinez | 2020 © </h3>
+        </div>
+      </div>
+    </footer>
+    <div class="v-snack v-snack--has-background v-snack--right v-snack--top" style="padding-bottom: 0px; padding-top: 0px;">
+      <transition-stub name="v-snack-transition">
+        <div class="v-snack__wrapper v-sheet theme--dark error" style="display: none;">
+          <div role="status" aria-live="polite" class="v-snack__content"><i aria-hidden="true" class="v-icon notranslate mr-2 mdi mdi-cloud-alert theme--dark"></i>
+            Whoops! Can't seem to request that IP
+          </div>
+          <div class="v-snack__action "></div>
+        </div>
+      </transition-stub>
+    </div>
+  </div>
+</div>
+`;

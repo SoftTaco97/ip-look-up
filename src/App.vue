@@ -72,6 +72,10 @@ export default {
       updateMap: null,
       error: false,
       loading: false,
+      titles: {
+        isp: 'Internet Service Provider',
+        ip: 'IP Address',
+      },
     };
   },
   mounted() {
@@ -79,12 +83,8 @@ export default {
     this.processIp();
   },
   methods: {
-    mapTitle(value) {
-      const titles = {
-        isp: 'Internet Service Provider',
-        ip: 'IP Address',
-      };
-      return titles[value] || capitalize(value);
+    mapTitle(title) {
+      return this.titles[title] || capitalize(title);
     },
     updateSearch(search) {
       this.userSearch = search;

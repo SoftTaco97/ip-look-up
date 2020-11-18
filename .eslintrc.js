@@ -11,6 +11,12 @@ module.exports = {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
     L: 'readonly',
+    describe: 'readonly',
+    it: 'readonly',
+    expect: 'readonly',
+    beforeEach: 'readonly',
+    afterEach: 'readonly',
+    jest: 'readonly',
   },
   parserOptions: {
     ecmaVersion: 2018,
@@ -19,6 +25,4 @@ module.exports = {
   plugins: [
     'vue',
   ],
-  rules: {
-  },
 };
