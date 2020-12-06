@@ -15,7 +15,7 @@ jest.mock('axios', () => ({
 jest.mock('../src/util/map', () => jest.fn().mockReturnValue(jest.fn()));
 jest.mock('../src/util/capitalize', () => jest.fn().mockImplementation((str) => str));
 
-describe('App.vue unit tests', () => {
+describe('src/App.vue unit tests', () => {
   const mountComponent = createComponentMounter(App);
   let wrapper;
 
@@ -100,7 +100,7 @@ describe('App.vue unit tests', () => {
       });
     });
     describe('createIpData unit tests', () => {
-      const mockData = { 
+      const mockData = {
         location: {
           city: 'someCity',
           region: 'someRegion',

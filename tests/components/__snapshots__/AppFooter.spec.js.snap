@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`src/components/AppFooter.vue unit tests rendering unit tests Should match the snapshot 1`] = `
+<div class="container container--fluid">
+  <div class="row justify-center">
+    <h3>Jared Martinez | 2020 © </h3>
+  </div>
+</div>
+`;
