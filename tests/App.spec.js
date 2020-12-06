@@ -78,7 +78,7 @@ describe('App.vue unit tests', () => {
   });
   describe('method unit tests', () => {
     describe('mapTitle unit tests', () => {
-      const mockTitles = { test: 'This is a tes title!' };
+      const mockTitles = { test: 'This is a test title!' };
 
       beforeEach(() => wrapper.setData({ titles: mockTitles }));
 
@@ -92,10 +92,130 @@ describe('App.vue unit tests', () => {
         expect(capitalize).toHaveBeenCalledWith(mockTitle);
       });
     });
-    // describe('updateSearch unit tests', () => {});
-    // describe('createIpData unit tests', () => {});
-    // describe('setMap unit tests', () => {});
-    // describe('processIp unit tests', () => {});
-    // describe('requestIpData unit tests', () => {});
+    describe('updateSearch unit tests', () => {
+      it('Should assign userSearch to the value', () => {
+        const mockSearch = 'test.com';
+        wrapper.vm.updateSearch(mockSearch);
+        expect(wrapper.vm.userSearch).toEqual(mockSearch);
+      });
+    });
+    describe('createIpData unit tests', () => {
+      const mockData = { 
+        location: {
+          city: 'someCity',
+          region: 'someRegion',
+          postalCode: 'someCode',
+          timezone: 'someTimezone',
+        },
+        ip: 'someIp',
+        isp: 'someIsp',
+      };
+      let ipData;
+      beforeEach(() => {
+        // spy on the mapTitle method
+        jest.spyOn(wrapper.vm, 'mapTitle').mockImplementation((word) => word);
+        ipData = wrapper.vm.createIpData(mockData);
+      });
+      it('Should include all the proper data', () => {
+        const { location, ...otherData } = mockData; // don't test location - this changes.
+        Object.entries(otherData).forEach(([key, value]) => {
+          const dataIndex = ipData.findIndex(({ title }) => title === key);
+          const entry = ipData[dataIndex];
+          expect(entry).not.toEqual(undefined);
+          expect(entry.title).toEqual(key);
+          expect(entry.value).toEqual(value);
+        });
+      });
+      it('Should create a useable location string', () => {
+        const mockLocation = `${mockData.location.city}, ${mockData.location.region} ${mockData.location.postalCode}`;
+        expect(ipData[1].value).toEqual(mockLocation);
+      });
+      it('Should map all the titles', () => {
+        const dataKeys = ['ip', 'isp', 'location', 'timezone'];
+        expect(wrapper.vm.mapTitle).toHaveBeenCalledTimes(dataKeys.length);
+        dataKeys.forEach((key) => expect(wrapper.vm.mapTitle).toHaveBeenCalledWith(key));
+      });
+    });
+    describe('setMap unit tests', () => {
+      const mockData = { lat: 1, lng: 3 };
+      it('Should create the map when a map has not been created', () => {
+        wrapper.vm.setMap(mockData);
+        expect(createMap).toHaveBeenCalledTimes(1);
+        expect(createMap).toHaveBeenCalledWith(mockData.lat, mockData.lng);
+        expect(wrapper.vm.updateMap).toEqual(createMap.mock.results[0].value);
+      });
+      it('Should update the map when a map has been created', async () => {
+        await wrapper.setData({ updateMap: jest.fn() });
+        wrapper.vm.setMap(mockData);
+        expect(wrapper.vm.updateMap).toHaveBeenCalledTimes(1);
+        expect(wrapper.vm.updateMap).toHaveBeenCalledWith(mockData.lat, mockData.lng);
+      });
+      it('Should use an empty object when nothing is passed in', () => {
+        wrapper.vm.setMap();
+        expect(createMap).toHaveBeenCalledTimes(1);
+        expect(createMap).toHaveBeenCalledWith(undefined, undefined);
+      });
+    });
+    describe('processIp unit tests', () => {
+      const mockData = {
+        location: 'someLocation',
+        isp: 'someIsp',
+        ip: 'someIp',
+      };
+      beforeEach(() => {
+        jest.spyOn(wrapper.vm, 'setMap').mockReturnValue(null);
+        jest.spyOn(wrapper.vm, 'updateSearch');
+        jest.spyOn(wrapper.vm, 'requestIpData').mockReturnValue(mockData);
+        return wrapper.vm.processIp();
+      });
+      it('Should get the ip data from the api', () => {
+        expect(wrapper.vm.requestIpData).toHaveBeenCalledTimes(1);
+      });
+      it('Should update the search property when it is not set', () => {
+        expect(wrapper.vm.updateSearch).toHaveBeenCalledTimes(1);
+        expect(wrapper.vm.updateSearch).toHaveBeenCalledWith(mockData.ip);
+      });
+      it('Should not update the search property when it is set', async () => {
+        jest.clearAllMocks();
+        await wrapper.setData({ userSearch: 'ip' });
+        await wrapper.vm.processIp();
+        expect(wrapper.vm.updateSearch).not.toHaveBeenCalled();
+      });
+      it('Should indicate to a user that an error occured when there was one', async () => {
+        jest.clearAllMocks();
+        wrapper.vm.requestIpData.mockRejectedValue(new Error('test'));
+        await wrapper.vm.processIp();
+        expect(wrapper.vm.error).toEqual(true);
+      });
+      it('Should throw an error when the api doesn\'t return the correct information', async () => {
+        jest.clearAllMocks();
+        wrapper.vm.requestIpData.mockReturnValue(null);
+        await wrapper.vm.processIp();
+        expect(wrapper.vm.error).toEqual(true);
+      });
+    });
+    describe('requestIpData unit tests', () => {
+      it('Should get the ip data from the api', async () => {
+        jest.clearAllMocks();
+        await wrapper.setData({
+          userSearch: 'test.com',
+        });
+        await wrapper.vm.requestIpData();
+        expect(axios.get).toHaveBeenCalledTimes(1);
+        expect(axios.get).toHaveBeenCalledWith(expect.stringContaining('test.com'));
+      });
+      it('Should throw an error when the api does not return the proper information', async () => {
+        jest.clearAllMocks();
+        axios.get.mockResolvedValue({
+          status: 400,
+          data: [],
+        });
+        await expect(wrapper.vm.requestIpData()).rejects.toThrow('Bad information returned');
+        axios.get.mockResolvedValue({
+          status: 200,
+        });
+        await expect(wrapper.vm.requestIpData()).rejects.toThrow('Bad information returned');
+      });
+    });
   });
 });

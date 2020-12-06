@@ -125,6 +125,7 @@ export default {
           // Update the map
           this.setMap(location);
         }
+        throw new Error('Bad information returned');
       } catch (e) {
         this.error = true;
       } finally {
