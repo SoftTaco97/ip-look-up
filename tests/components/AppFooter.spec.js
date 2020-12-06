@@ -9,10 +9,7 @@ describe('src/components/AppFooter.vue unit tests', () => {
     wrapper = mountComponent();
   });
 
-  afterEach(() => {
-    wrapper.destroy();
-    jest.clearAllMocks();
-  });
+  afterEach(() => wrapper.destroy());
 
   describe('rendering unit tests', () => {
     it('Should match the snapshot', () => {

@@ -2,8 +2,7 @@ import axios from 'axios';
 import createMap from '../src/util/map';
 import capitalize from '../src/util/capitalize';
 import createComponentMounter from './componentMounter';
-import AppHeader from '../src/components/AppHeader.vue';
-import AppFooter from '../src/components/AppFooter.vue';
+import createStubs from './createStubs';
 import App from '../src/App.vue';
 
 jest.mock('axios', () => ({
@@ -16,7 +15,8 @@ jest.mock('../src/util/map', () => jest.fn().mockReturnValue(jest.fn()));
 jest.mock('../src/util/capitalize', () => jest.fn().mockImplementation((str) => str));
 
 describe('src/App.vue unit tests', () => {
-  const mountComponent = createComponentMounter(App);
+  const stubs = createStubs(['AppFooter', 'AppHeader']);
+  const mountComponent = createComponentMounter(App, { stubs });
   let wrapper;
 
   beforeEach(() => {
@@ -36,10 +36,6 @@ describe('src/App.vue unit tests', () => {
     });
     it('Should render properly', () => {
       expect(wrapper.exists()).toEqual(true);
-    });
-    it('Should have a header and footer ', () => {
-      expect(wrapper.findComponent(AppHeader).exists()).toEqual(true);
-      expect(wrapper.findComponent(AppFooter).exists()).toEqual(true);
     });
     it('Should display a loading message when there is no ip data', () => {
       expect(wrapper.text()).toEqual(expect.stringContaining('Loading...'));

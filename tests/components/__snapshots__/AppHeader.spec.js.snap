@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`src/components/AppHeader.vue unit tests Rendering unit tests Should match the snapshot 1`] = `
+<div class="container container--fluid">
+  <div class="row justify-center">
+    <div class="col col-12">
+      <h2>IP Address Look Up</h2>
+    </div>
+  </div>
+  <div search=""></div>
+</div>
+`;
